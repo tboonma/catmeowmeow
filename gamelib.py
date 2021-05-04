@@ -92,6 +92,9 @@ class Sprite(GameCanvasElement):
             self.x, 
             self.y,
             image=self.photo_image)
+    
+    def update(self):
+        pass
 
 
 class GameApp(ttk.Frame): 

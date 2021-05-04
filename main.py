@@ -7,61 +7,60 @@ from gamelib import Sprite, GameApp, Text
 
 from consts import *
 
-class SlowFruit(Sprite):
+class Fruit(Sprite):
+    reward = 1
+    def __init__(self, app, img, x, y):
+        super().__init__(app, img, x, y)
+
+        self.app = app
+    
+    def update(self):
+        if self.x < -30:
+            self.to_be_deleted = True
+
+class SlowFruit(Fruit):
     def __init__(self, app, x, y):
         super().__init__(app, 'images/apple.png', x, y)
 
-        self.app = app
-
     def update(self):
+        super().update()
         self.x -= FRUIT_SLOW_SPEED
 
-        if self.x < -30:
-            self.to_be_deleted = True
 
-
-class FastFruit(Sprite):
+class FastFruit(Fruit):
+    reward = 2
     def __init__(self, app, x, y):
         super().__init__(app, 'images/banana.png', x, y)
 
-        self.app = app
-
     def update(self):
+        super().update()
         self.x -= FRUIT_FAST_SPEED
 
-        if self.x < -30:
-            self.to_be_deleted = True
 
-
-class SlideFruit(Sprite):
+class SlideFruit(Fruit):
+    reward = 3
     def __init__(self, app, x, y):
         super().__init__(app, 'images/cherry.png', x, y)
-
-        self.app = app
         self.direction = randint(0,1)*2 - 1
 
     def update(self):
+        super().update()
         self.x -= FRUIT_FAST_SPEED
         self.y += self.direction * 5
 
-        if self.x < -30:
-            self.to_be_deleted = True
 
-
-class CurvyFruit(Sprite):
+class CurvyFruit(Fruit):
+    reward = 3
     def __init__(self, app, x, y):
         super().__init__(app, 'images/pear.png', x, y)
 
-        self.app = app
         self.t = randint(0,360) * 2 * math.pi / 360
 
     def update(self):
+        super().update()
         self.x -= FRUIT_SLOW_SPEED * 1.2
         self.t += 1
         self.y += math.sin(self.t*0.08)*10
-
-        if self.x < -30:
-            self.to_be_deleted = True
 
 
 class Cat(Sprite):
@@ -75,9 +74,13 @@ class Cat(Sprite):
         if self.direction == CAT_UP:
             if self.y >= CAT_MARGIN:
                 self.y -= CAT_SPEED
+            else:
+                self.y = CANVAS_HEIGHT + 20
         elif self.direction == CAT_DOWN:
             if self.y <= CANVAS_HEIGHT - CAT_MARGIN:
                 self.y += CAT_SPEED
+            else:
+                self.y = -20
 
     def check_collision(self, fruit):
         if self.distance_to(fruit) <= CAT_CATCH_DISTANCE:
