@@ -6,6 +6,10 @@ import tkinter as tk
 from gamelib import Sprite, GameApp, Text
 
 from consts import *
+from abc import ABC, abstractmethod
+
+# Do 1,2,3,4
+# Done 2,3,4
 
 class Fruit(Sprite):
     reward = 1
